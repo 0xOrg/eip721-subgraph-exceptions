@@ -3,7 +3,7 @@ import { Transfer, EIP721 } from '../generated/EIP721/EIP721';
 import { Token, TokenContract, Owner, All, OwnerPerTokenContract } from '../generated/schema';
 
 // import { log } from '@graphprotocol/graph-ts';
-const exceptions = [
+const exceptions: Array<String> = [
   '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d' // kitties
 ];
 
@@ -62,14 +62,14 @@ export function handleTransfer(event: Transfer): void {
     let supportsEIP165Identifier = supportsInterface(contract, '01ffc9a7');
     let supportsEIP721Identifier = supportsInterface(contract, '80ac58cd');
     let supportsNullIdentifierFalse = supportsInterface(contract, '00000000', false);
-    let supportsEIP721 = supportsEIP165Identifier && supportsEIP721Identifier && supportsNullIdentifierFalse;
+    let supportsEIP721 = supportsEIP165Identifier && supportsEIP721Identifier && supportsNullIdentifierFalse || exceptions.includes(contractId);
 
     let supportsEIP721Metadata = false;
-    if (supportsEIP721 || exceptions.includes(contractId)) {
+    if (supportsEIP721) {
       supportsEIP721Metadata = supportsInterface(contract, '5b5e139f');
       // log.error('NEW CONTRACT eip721Metadata for {} : {}', [event.address.toHex(), supportsEIP721Metadata ? 'true' : 'false']);
     }
-    if (supportsEIP721 || exceptions.includes(contractId)) {
+    if (supportsEIP721) {
       tokenContract = new TokenContract(contractId);
       tokenContract.doAllAddressesOwnTheirIdByDefault = false;
       tokenContract.supportsEIP721Metadata = supportsEIP721Metadata;
