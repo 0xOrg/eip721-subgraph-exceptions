@@ -3,9 +3,7 @@ import { Transfer, EIP721 } from '../generated/EIP721/EIP721';
 import { Token, TokenContract, Owner, All, OwnerPerTokenContract } from '../generated/schema';
 
 // import { log } from '@graphprotocol/graph-ts';
-
-// @dev each address must be lowercase
-let exceptions: Array<String> = [
+const exceptions: Array<String> = [
   '0x06012c8cf97bead5deae237070f9587f8e7a266d' // kitties
 ];
 
